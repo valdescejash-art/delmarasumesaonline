@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>🌊 D'el Mar a su mesa - Pedidos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: #0a2f44;
+            padding: 12px;
+        }
+
+        /* Contenedor principal */
+        .app {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.1);
+            border-radius: 28px;
+            padding: 16px;
+        }
+
+        /* Cabecera */
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .logo {
+            width: 70px;
+            height: 70px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 2px solid gold;
+            margin-bottom: 8px;
+        }
+        h1 {
+            font-size: 1.6rem;
+            color: #ffecb3;
+            text-shadow: 1px 1px 2px #000;
+        }
+        .sub {
+            color: #cfe7ff;
+            font-size: 0.8rem;
+        }
+
+        /* Secciones */
+        .seccion {
+            margin-bottom: 24px;
+        }
+        .seccion h2 {
+            background: #1e4a76;
+            display: inline-block;
+            padding: 4px 16px;
+            border-radius: 20px;
+            color: white;
+            font-size: 1.2rem;
+            margin-bottom: 12px;
+        }
+
+        /* Grid de productos: 2 columnas fijas en móvil */
+        .productos-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        /* Tarjeta */
+        .producto-card {
+            background: white;
+            border-radius: 20px;
+            padding: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: 0.1s;
+        }
+        .producto-card:active {
+            transform: scale(0.97);
+        }
+        .producto-img {
+            width: 100%;
+            height: 110px;
+            background: #f0f0f0;
+            border-radius: 16px;
+            margin-bottom: 8px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .producto-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .producto-nombre {
+            font-weight: bold;
+            font-size: 0.85rem;
+            margin: 6px 0;
+            color: #023e6b;
+            line-height: 1.2;
+        }
+        .producto-precio {
+            color: #1f7b2e;
+            font-weight: bold;
+            font-size: 1rem;
+            margin: 4px 0;
+        }
+        .btn-agregar {
+            background: #25D366;
+            color: white;
+            border: none;
+            padding: 8px;
+            border-radius: 30px;
+            width: 100%;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+
+        /* Carrito */
+        .carrito {
+            background: white;
+            border-radius: 24px;
+            padding: 16px;
+            margin-top: 24px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .carrito h2 {
+            font-size: 1.3rem;
+            border-bottom: 2px solid #ffc857;
+            padding-bottom: 6px;
+            margin-bottom: 12px;
+            color: #023e6b;
+        }
+        .item-carrito {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .item-info {
+            flex: 2;
+        }
+        .item-nombre {
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+        .item-precio {
+            font-size: 0.7rem;
+            color: gray;
+        }
+        .item-cantidad {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .item-cantidad button {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #e9ecef;
+            border: none;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        .item-subtotal {
+            font-weight: bold;
+            min-width: 60px;
+            text-align: right;
+        }
+        .eliminar {
+            background: none;
+            border: none;
+            color: red;
+            font-size: 1.2rem;
+        }
+        .total-detalle {
+            margin-top: 12px;
+            border-top: 2px solid #ffc857;
+            padding-top: 10px;
+        }
+        select, input, textarea {
+            width: 100%;
+            padding: 12px;
+            margin: 6px 0;
+            border-radius: 30px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+        }
+        .btn-whatsapp {
+            background: #25D366;
+            color: white;
+            font-weight: bold;
+            padding: 14px;
+            border: none;
+            border-radius: 40px;
+            width: 100%;
+            font-size: 1rem;
+            margin-top: 12px;
+        }
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.7rem;
+            color: #ddd;
+        }
+
+        /* Ajuste para pantallas muy pequeñas */
+        @media (max-width: 450px) {
+            .productos-grid {
+                gap: 8px;
+            }
+            .producto-nombre {
+                font-size: 0.75rem;
+            }
+            .btn-agregar {
+                padding: 6px;
+                font-size: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="app">
+    <div class="header">
+        <img src="imagenes/LOGO.jpeg" alt="Logo" class="logo" onerror="this.src='https://placehold.co/70x70?text=🌊'">
+        <h1>🌊 D'el Mar a su mesa</h1>
+        <div class="sub">Fresco del mar a tu mesa – Envíos a toda La Habana</div>
+    </div>
+
+    <div id="contenedorSecciones"></div>
+
+    <div class="carrito">
+        <h2>📦 Carrito</h2>
+        <div id="carritoLista">🛍️ Vacío</div>
+        <div id="detalleTotales" class="total-detalle"></div>
+        <div class="envio-select">
+            <label>🏙️ Municipio de entrega:</label>
+            <select id="municipioSelect">
+                <option value="">-- Selecciona --</option>
+                <option value="2">Habana Vieja (2 km)</option>
+                <option value="3">Centro Habana (3 km)</option>
+                <option value="4">Cerro (4 km)</option>
+                <option value="5">Diez de Octubre (5 km)</option>
+                <option value="10">Arroyo Naranjo (10 km)</option>
+                <option value="12">Boyeros (12 km)</option>
+                <option value="11">La Lisa (11 km)</option>
+                <option value="8">Marianao (8 km)</option>
+                <option value="7">Playa (7 km)</option>
+                <option value="4">Plaza de la Revolución (4 km)</option>
+                <option value="9">Guanabacoa (9 km)</option>
+                <option value="6">Regla (6 km)</option>
+                <option value="8">San Miguel del Padrón (8 km)</option>
+                <option value="14">Cotorro (14 km)</option>
+            </select>
+        </div>
+        <div class="form-cliente">
+            <input type="text" id="clienteNombre" placeholder="Tu nombre *">
+            <input type="tel" id="clienteTelefono" placeholder="Teléfono">
+            <textarea id="clienteDireccion" rows="2" placeholder="Dirección específica *"></textarea>
+        </div>
+        <button class="btn-whatsapp" id="enviarWhatsappBtn">💬 Enviar pedido por WhatsApp</button>
+        <div class="aviso" style="font-size: 11px; margin-top: 10px;">⚠️ Costo de envío: $150 por km desde el Capitolio</div>
+    </div>
+    <footer>🐟 Pedidos por WhatsApp | Frescura garantizada</footer>
+</div>
+
+<script>
+    // ================= DATOS DE PRODUCTOS =================
+    const telefonoNegocio = "5363152488"; // Reemplaza con tu número
+
+    const productos = [
+        { id: 1, nombre: "🍤 Camarón limpio (2 lb)", precio: 5600, img: "imagenes/camaron.jpg", seccion: "mariscos" },
+        { id: 2, nombre: "🦞 Langosta en colas (5 colas)", precio: 3000, img: "imagenes/colas5.jpg", seccion: "mariscos" },
+        { id: 3, nombre: "🦞 Langosta en colas (7-8 colas)", precio: 3500, img: "imagenes/langostacolas2.jpg", seccion: "mariscos" },
+        { id: 4, nombre: "🦞 Langosta limpia (paquete)", precio: 3500, img: "imagenes/langostalimpia.jpg", seccion: "mariscos" },
+        { id: 5, nombre: "🦀 Masa de cangrejo (2 lb)", precio: 3100, img: "imagenes/masacangrejo.jpg", seccion: "mariscos" },
+        { id: 6, nombre: "🦀 Muelas de cangrejo moro (2 lb)", precio: 2000, img: "imagenes/muelamoro.jpg", seccion: "mariscos" },
+        { id: 7, nombre: "🐟 Filete de Emperador (1.5 lb)", precio: 2600, img: "imagenes/fileteemperador.jpg", seccion: "pescados" },
+        { id: 8, nombre: "🐟 Filete de salmón (1 lb)", precio: 1900, img: "imagenes/SALMON.jpg", seccion: "pescados" },
+        { id: 9, nombre: "🐟 Filetes de Castero (1.5 lb)", precio: 2600, img: "imagenes/filetecastero.jpg", seccion: "pescados" },
+        { id: 10, nombre: "🐟 Ruedas de pargo (2 lb)", precio: 3500, img: "imagenes/ruedapargo.jpg", seccion: "pescados" },
+        { id: 11, nombre: "🐟 Filete de pargo (1.5 lb)", precio: 2700, img: "imagenes/filetepargo.jpg", seccion: "pescados" },
+        { id: 12, nombre: "🐟 Ruedas de lisa (1.5 lb)", precio: 2400, img: "imagenes/ruedalisa.jpg", seccion: "pescados" },
+        { id: 13, nombre: "🐟 Pargo para asar (8 lb desvicerado)", precio: 9500, img: "imagenes/PARGOASAR.jpg", seccion: "pescados" },
+        { id: 14, nombre: "🐢 Carne limpia de Cawama (1.5 lb)", precio: 3100, img: "imagenes/carnecawama.jpg", seccion: "carnicos" },
+        { id: 15, nombre: "🐄 Res (1.5 lb)", precio: 3000, img: "imagenes/res1.5.jpg", seccion: "carnicos" },
+        { id: 16, nombre: "🐄 Res (3 lb)", precio: 6000, img: "imagenes/res3.jpg", seccion: "carnicos" },
+        { id: 17, nombre: "🐄 Res (5 lb)", precio: 9000, img: "imagenes/res5.jpg", seccion: "carnicos" }
+    ];
+
+    let carrito = [];
+    let kmSeleccionado = 0;
+
+    function guardarCarrito() { localStorage.setItem("carritoDelMar", JSON.stringify(carrito)); }
+    function cargarCarrito() { const g = localStorage.getItem("carritoDelMar"); if(g) carrito = JSON.parse(g); actualizarTodo(); }
+
+    function agregarAlCarrito(id) {
+        const prod = productos.find(p => p.id === id);
+        if(!prod) return;
+        const existente = carrito.find(i => i.id === id);
+        if(existente) existente.cantidad++;
+        else carrito.push({ id: prod.id, nombre: prod.nombre, precio: prod.precio, cantidad: 1 });
+        guardarCarrito();
+        actualizarTodo();
+    }
+
+    function cambiarCantidad(id, delta) {
+        const idx = carrito.findIndex(i => i.id === id);
+        if(idx === -1) return;
+        const nueva = carrito[idx].cantidad + delta;
+        if(nueva <= 0) carrito.splice(idx,1);
+        else carrito[idx].cantidad = nueva;
+        guardarCarrito();
+        actualizarTodo();
+    }
+
+    function eliminarItem(id) {
+        carrito = carrito.filter(i => i.id !== id);
+        guardarCarrito();
+        actualizarTodo();
+    }
+
+    function calcularTotales() {
+        let subtotal = 0;
+        carrito.forEach(i => subtotal += i.precio * i.cantidad);
+        let envio = kmSeleccionado ? kmSeleccionado * 150 : 0;
+        return { subtotal, envio, total: subtotal + envio };
+    }
+
+    function renderizarCarrito() {
+        const contenedor = document.getElementById("carritoLista");
+        if(!contenedor) return;
+        if(carrito.length === 0) {
+            contenedor.innerHTML = '<div style="padding:10px; text-align:center;">🛍️ No hay productos</div>';
+            return;
+        }
+        let html = "";
+        carrito.forEach(item => {
+            html += `
+                <div class="item-carrito">
+                    <div class="item-info">
+                        <div class="item-nombre">${item.nombre}</div>
+                        <div class="item-precio">$${item.precio} c/u</div>
+                    </div>
+                    <div class="item-cantidad">
+                        <button class="btnMenor" data-id="${item.id}">-</button>
+                        <span>${item.cantidad}</span>
+                        <button class="btnMayor" data-id="${item.id}">+</button>
+                        <button class="eliminar" data-id="${item.id}">🗑️</button>
+                    </div>
+                    <div class="item-subtotal">$${item.precio * item.cantidad}</div>
+                </div>
+            `;
+        });
+        contenedor.innerHTML = html;
+        document.querySelectorAll('.btnMenor').forEach(btn => btn.addEventListener('click', () => cambiarCantidad(parseInt(btn.dataset.id), -1)));
+        document.querySelectorAll('.btnMayor').forEach(btn => btn.addEventListener('click', () => cambiarCantidad(parseInt(btn.dataset.id), 1)));
+        document.querySelectorAll('.eliminar').forEach(btn => btn.addEventListener('click', () => eliminarItem(parseInt(btn.dataset.id))));
+    }
+
+    function renderizarTotales() {
+        const { subtotal, envio, total } = calcularTotales();
+        const div = document.getElementById("detalleTotales");
+        div.innerHTML = `
+            <div style="display:flex; justify-content:space-between;"><span>Subtotal:</span><span>$${subtotal}</span></div>
+            <div style="display:flex; justify-content:space-between;"><span>🚚 Envío (${kmSeleccionado} km):</span><span>$${envio}</span></div>
+            <div style="display:flex; justify-content:space-between; font-weight:bold; font-size:1.1rem;"><span>Total:</span><span>$${total}</span></div>
+        `;
+    }
+
+    function renderizarSecciones() {
+        const secciones = [
+            { titulo: "🌊 Mariscos", key: "mariscos" },
+            { titulo: "🐟 Pescados", key: "pescados" },
+            { titulo: "🥩 Cárnicos", key: "carnicos" }
+        ];
+        const container = document.getElementById("contenedorSecciones");
+        container.innerHTML = "";
+        secciones.forEach(sec => {
+            const prodFiltrados = productos.filter(p => p.seccion === sec.key);
+            if(prodFiltrados.length === 0) return;
+            const divSeccion = document.createElement("div");
+            divSeccion.className = "seccion";
+            divSeccion.innerHTML = `<h2>${sec.titulo}</h2><div class="productos-grid" id="grid-${sec.key}"></div>`;
+            container.appendChild(divSeccion);
+            const grid = document.getElementById(`grid-${sec.key}`);
+            prodFiltrados.forEach(prod => {
+                const card = document.createElement("div");
+                card.className = "producto-card";
+                card.innerHTML = `
+                    <div class="producto-img"><img src="${prod.img}" alt="${prod.nombre}" loading="lazy" onerror="this.src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22100%25%22%20height%3D%22100%25%22%20viewBox%3D%220%200%20200%20140%22%3E%3Crect%20width%3D%22200%22%20height%3D%22140%22%20fill%3D%22%23f0f0f0%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20font-size%3D%2212%22%20fill%3D%22%23999%22%20text-anchor%3D%22middle%22%3ESin%20imagen%3C%2Ftext%3E%3C%2Fsvg%3E';"></div>
+                    <div class="producto-nombre">${prod.nombre}</div>
+                    <div class="producto-precio">$${prod.precio}</div>
+                    <button class="btn-agregar" data-id="${prod.id}">➕ Agregar</button>
+                `;
+                card.querySelector(".btn-agregar").addEventListener("click", () => agregarAlCarrito(prod.id));
+                grid.appendChild(card);
+            });
+        });
+    }
+
+    function actualizarTodo() {
+        renderizarCarrito();
+        renderizarTotales();
+    }
+
+    function initMunicipio() {
+        const select = document.getElementById("municipioSelect");
+        select.addEventListener("change", (e) => {
+            const value = parseInt(e.target.value);
+            kmSeleccionado = isNaN(value) ? 0 : value;
+            renderizarTotales();
+        });
+    }
+
+    function enviarPedido() {
+        const nombre = document.getElementById("clienteNombre")?.value.trim();
+        const direccion = document.getElementById("clienteDireccion")?.value.trim();
+        const telefonoCliente = document.getElementById("clienteTelefono")?.value.trim();
+        if(!nombre) { alert("⚠️ Escribe tu nombre."); return; }
+        if(!direccion) { alert("⚠️ Escribe la dirección."); return; }
+        if(carrito.length === 0) { alert("🛒 Agrega productos."); return; }
+        const { subtotal, envio, total } = calcularTotales();
+        let detalle = "";
+        carrito.forEach(item => detalle += `• ${item.nombre}  x${item.cantidad}  = $${item.precio * item.cantidad}\n`);
+        let mensaje = `🌊 *NUEVO PEDIDO* 🌊\n\n👤 ${nombre}\n${telefonoCliente ? `📞 ${telefonoCliente}\n` : ''}🏠 ${direccion}\n\n📋 Productos:\n${detalle}\n💰 Subtotal: $${subtotal}\n🚚 Envío (${kmSeleccionado} km): $${envio}\n✨ TOTAL: $${total}`;
+        window.open(`https://wa.me/${telefonoNegocio}?text=${encodeURIComponent(mensaje)}`, "_blank");
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        renderizarSecciones();
+        cargarCarrito();
+        initMunicipio();
+        document.getElementById("enviarWhatsappBtn").addEventListener("click", enviarPedido);
+    });
+</script>
+</body>
+</html>
